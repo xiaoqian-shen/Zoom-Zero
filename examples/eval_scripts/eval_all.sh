@@ -1,5 +1,5 @@
+full_model_path=$1
 NAME="CGBench ReXTime NextGQA VideoMME LVBench MLVU"
-full_model_path="MODEL_PATH"
 base_name=$(basename "$full_model_path")
 OUTPUT_DIR=work_dirs_eval/$base_name
 prefix="base"
