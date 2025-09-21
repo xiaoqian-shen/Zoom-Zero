@@ -33,5 +33,5 @@ Here we provide the script for running the evaluation.
 
 ```
 # Evaluate all benchmarks
-bash example/eval_scripts/eval_all.sh
+bash example/eval_scripts/eval_all.sh MODEL_PATH
 ```
