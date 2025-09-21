@@ -1,0 +1,30 @@
+NAME="CGBench ReXTime NextGQA VideoMME LVBench MLVU"
+full_model_path="MODEL_PATH"
+base_name=$(basename "$full_model_path")
+OUTPUT_DIR=work_dirs_eval/$base_name
+prefix="base"
+
+if [[ "$NAME" == *"VideoMME"* ]]; then
+    bash examples/eval_scripts/eval_videomme.sh $full_model_path ${prefix} /home/xiaoqians/personal/dataset/Video-MME
+    bash examples/eval_scripts/eval_videomme.sh $full_model_path ${prefix}_sub /home/xiaoqians/personal/dataset/Video-MME
+fi
+
+if [[ "$NAME" == *"MLVU"* ]]; then
+    bash examples/eval_scripts/eval_mlvu.sh $full_model_path $prefix /home/xiaoqians/personal/dataset/MLVU/MLVU
+fi
+
+if [[ "$NAME" == *"LVBench"* ]]; then
+    bash examples/eval_scripts/eval_lvb.sh $full_model_path $prefix /home/xiaoqians/personal/dataset/LVBench
+fi
+
+if [[ "$NAME" == *"NextGQA"* ]]; then
+    bash examples/eval_scripts/eval_nextgqa.sh $full_model_path $prefix /home/xiaoqians/personal/dataset/NExT-GQA
+fi
+
+if [[ "$NAME" == *"ReXTime"* ]]; then
+    bash examples/eval_scripts/eval_rextime.sh $full_model_path $prefix /home/xiaoqians/personal/dataset/ReXTime
+fi
+
+if [[ "$NAME" == *"CGBench"* ]]; then
+    bash examples/eval_scripts/eval_cgbench.sh $full_model_path $prefix /home/xiaoqians/personal/dataset/CG-Bench
+fi
