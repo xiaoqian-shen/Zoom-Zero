@@ -35,35 +35,9 @@ from torchvision.transforms import InterpolationMode
 from ..models.transformers.qwen2_vl import get_rope_index
 from . import torch_functional as VF
 
-QUESTION_TEMPLATE_LONG = """
-Identify the key visual content relevant to the given question and options, marking precise timestamps or time ranges in seconds within <time> </time> tags, and present them in an interleaved analysis format, less than 300 tokens. Enclose the full analysis in <think> </think> tags.
-Then, provide your answer within the <answer> </answer> tags, output the corresponding letter of the option. At the same time, in the <glue> </glue> tags, include only the precise video segments (in seconds) that strongly support your answer, in the format of [(s1, e1), (s2, e2), ...].
-For example:
-Question: What is the next step the scientist takes in the experiment after pouring the blue liquid?
-(A) They stir the mixture with a glass rod.
-(B) They add a white powder to the beaker.
-(C) They put on safety goggles.
-(D) They heat the beaker.
-Your answer:
-<think> I need to identify the main steps of the experiment in chronological order.
-<time> 10.2s - 15.8s </time>, the scientist puts on a pair of safety goggles.
-<time> 25.1s - 29.5s </time>, they pour a blue liquid into a glass beaker.
-<time> 38.6s - 43.0s </time>, they take a spatula with white powder and add it to the blue liquid, causing a reaction.
-<time> 53.0s - 58.4s </time>, Finally, the beaker is placed over a Bunsen burner to be heated.
-Let me double check the most relevant segments:
-After pouring the liquid <time> 25.1s - 29.5s </time>, the next action related to the chemical mixture is adding the powder <time> 38.6s - 43.0s </time>. </think>
-<answer>B</answer>\n<glue>[(25.1, 29.5), (38.6, 43.0)]</glue>
-Following the instruction above, please answer the question:\n
-"""
-
 QUESTION_TEMPLATE = """
 Identify the key visual content relevant to the given question and options, marking precise timestamps or time ranges in seconds within <time> </time> tags, and present them in an interleaved analysis format. Enclose the full analysis in <think> </think> tags. For example: <think> After folding the face towel <time>(5.2, 10.4)</time>, the person placed it on the bed <time>(20.3, 30.8)</time>.</think>\n
 Then, provide your answer within the <answer> </answer> tags, output the corresponding letter of the option. At the same time, in the <glue> </glue> tags, include only the precise video segments (in seconds) that strongly support your answer, in the format of [(s1, e1), (s2, e2), ...]. Do not list unrelated time ranges. For example: <answer>A</answer>\n<glue>[(20.3, 30.8)]</glue>.
-Following the instruction above, please answer the question:\n
-"""
-
-QUESTION_TEMPLATE_NO_THINK = """
-Provide your answer within the <answer> </answer> tags, output the corresponding letter of the option. At the same time, in the <glue> </glue> tags, include only the precise video segments (in seconds) that strongly support your answer, in the format of [(s1, e1), (s2, e2), ...]. Do not list unrelated time ranges. For example: <answer>A</answer>\n<glue>[(20.3, 30.8)]</glue>.
 Following the instruction above, please answer the question:\n
 """
 
@@ -236,10 +210,7 @@ class RLHFDataset(Dataset):
             nframe_inputs = video_inputs.shape[0]
 
             length_inputs = round(nframe_inputs / fps_inputs, 2)
-            prompt_template = QUESTION_TEMPLATE_LONG if length_inputs > 600 else QUESTION_TEMPLATE
-            if not self.config.think:
-                prompt_template = QUESTION_TEMPLATE_NO_THINK
-            system_prompt = self.system_prompt if self.system_prompt else prompt_template
+            system_prompt = self.system_prompt if self.system_prompt else QUESTION_TEMPLATE
             video_prompt = "This video in total has " + str(length_inputs) + " seconds. "
 
             messages = [
