@@ -311,7 +311,7 @@ def compute_grpo_select_outcome_advantage(
     scores_iou = all_scores["iou"].unsqueeze(-1).tile([1, response_length]) * iou_mask
     scores_zoom = all_scores["zoom"].unsqueeze(-1).tile([1, response_length]) * eos_mask
     scores_answer = all_scores["answer"].unsqueeze(-1).tile([1, response_length]) * answer_mask
-    scores = (scores_format + scores_zoom + scores_iou + scores_answer) / 4.0
+    scores = (scores_format + scores_zoom + scores_iou + scores_answer) / 3.0
     id2mean, id2std = {}, {}
     id2score = defaultdict(list)
     for i in range(eos_mask.shape[0]):
