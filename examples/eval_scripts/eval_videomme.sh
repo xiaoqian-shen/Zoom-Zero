@@ -5,7 +5,7 @@ data_path=$3
 export NCCL_DEBUG=INFO
 export CUDA_LAUNCH_BLOCKING=1
 
-/home/xiaoqians/personal/anaconda3/envs/r1/bin/torchrun \
+torchrun \
     --nnodes=$SLURM_NNODES \
     --node_rank=$NODE_RANK \
     --master_addr=$MASTER_ADDR \
