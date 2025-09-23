@@ -267,9 +267,8 @@ def compute_grpo_sep_outcome_advantage(
     scores = scores.unsqueeze(-1).tile([1, response_length]) * eos_mask
     return scores, scores
 
-@torch.no_grad()
 def compute_grpo_select_outcome_advantage(
-    token_level_rewards: torch.Tensor, eos_mask: torch.Tensor, index: torch.Tensor, epsilon: float = 1e-6, scale_iou: float = 1.0
+    token_level_rewards: torch.Tensor, eos_mask: torch.Tensor, index: torch.Tensor, epsilon: float = 1e-6
 ) -> Tuple[torch.Tensor, torch.Tensor]:
     """
     Compute advantage for GRPO, operating only on Outcome reward
@@ -299,35 +298,31 @@ def compute_grpo_select_outcome_advantage(
 
         bsz = scores.shape[0]
         for i in range(bsz):
-            all_scores[key][i] = scores[i]
+            id2score[index[i]].append(scores[i])
+
+        for idx in id2score:
+            if len(id2score[idx]) == 1:
+                id2mean[idx] = torch.tensor(0.0)
+                id2std[idx] = torch.tensor(1.0)
+            elif len(id2score[idx]) > 1:
+                id2mean[idx] = torch.mean(torch.tensor(id2score[idx]))
+                id2std[idx] = torch.std(torch.tensor([id2score[idx]]))
+            else:
+                raise ValueError(f"no score in prompt index: {idx}")
+        for i in range(bsz):
+            all_scores[key][i] = (scores[i] - id2mean[index[i]]) / (id2std[index[i]] + epsilon)
     iou_mask_id = token_level_rewards["mask_iou"]
     answer_mask_id = token_level_rewards["mask_answer"]
     range_tensor = torch.arange(response_length).unsqueeze(0).expand(bsz, response_length).to(eos_mask.device)
     before_mask = (range_tensor < answer_mask_id.unsqueeze(1)) * eos_mask
     after_mask = (range_tensor >= iou_mask_id.unsqueeze(1)) * eos_mask
     iou_mask = before_mask + after_mask
-    answer_mask = (1 - iou_mask) * eos_mask
+    answer_mask = (range_tensor < iou_mask_id.unsqueeze(1)) * eos_mask
     scores_format = all_scores["format"].unsqueeze(-1).tile([1, response_length]) * eos_mask
     scores_iou = all_scores["iou"].unsqueeze(-1).tile([1, response_length]) * iou_mask
     scores_zoom = all_scores["zoom"].unsqueeze(-1).tile([1, response_length]) * eos_mask
     scores_answer = all_scores["answer"].unsqueeze(-1).tile([1, response_length]) * answer_mask
     scores = (scores_format + scores_zoom + scores_iou + scores_answer) / 3.0
-    id2mean, id2std = {}, {}
-    id2score = defaultdict(list)
-    for i in range(eos_mask.shape[0]):
-        valid_tokens = (eos_mask[i] == 1)
-        id2score[index[i]].append(scores[i][valid_tokens])
-    for idx in id2score:
-        if len(id2score[idx]) == 1:
-            id2mean[idx] = torch.tensor(0.0)
-            id2std[idx] = torch.tensor(1.0)
-        elif len(id2score[idx]) > 1:
-            id2mean[idx] = torch.mean(torch.cat(id2score[idx]))
-            id2std[idx] = torch.std(torch.cat(id2score[idx]))
-        else:
-            raise ValueError(f"no score in prompt index: {idx}")
-    for i in range(eos_mask.shape[0]):
-        scores[i] = (scores[i] - id2mean[index[i]]) / (id2std[index[i]] + epsilon) * eos_mask[i]
     return scores, scores
 
 @torch.no_grad()
