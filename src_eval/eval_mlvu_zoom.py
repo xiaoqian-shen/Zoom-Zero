@@ -336,7 +336,7 @@ def train(args) -> None:
                 fine_answer = top_answers[0]['answer']
 
         final_answer, final_confidence = (fine_answer, fine_answer_confidence) if fine_answer_confidence > coarse_answer_confidence else (coarse_answer, coarse_answer_confidence)
-        if final_confidence < 0.6 and final_confidence < top_answers[0]['confidence']:
+        if final_confidence < 0.5 and final_confidence < top_answers[0]['confidence']:
             final_answer, final_confidence = top_answers[0]['answer'], top_answers[0]['confidence']
         
         output.append(
