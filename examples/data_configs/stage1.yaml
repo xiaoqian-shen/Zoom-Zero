@@ -1,7 +1,0 @@
-datasets:
-    - json_path: ./annotations/GVideoQA-anet.json
-      data_folder: ./datasets/Grounded-VideoLLM/activitynet/videos
-    - json_path: ./annotations/GVideoQA-qvhighlights.json
-      data_folder: ./Grounded-VideoLLM/qvhighlights/videos
-    - json_path: ./annotations/NextGQA/nextgqa_val.json
-      data_folder: ./dataset/NExT-GQA/NExTVideo
