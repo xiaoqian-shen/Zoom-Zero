@@ -1,0 +1,13 @@
+datasets:
+    - json_path: /home/xiaoqians/personal/dataset/eagle-video/vtg_hirest_3k.json
+      data_folder: /lustre/fsw/portfolios/nvr/projects/nvr_taiwan_rvos/datasets/Grounded-VideoLLM/HiREST/videos
+    - json_path: /home/xiaoqians/personal/dataset/eagle-video/vtg_medvidqa_1k.json
+      data_folder: /home/xiaoqians/personal/dataset/eagle-video/video-vtg-medvidqa-train
+    - json_path: /home/xiaoqians/personal/dataset/eagle-video/vtg_tacos_1k.json
+      data_folder: /home/xiaoqians/personal/dataset/eagle-video/video-vtg-tacos-train
+    - json_path: /home/xiaoqians/personal/dataset/eagle-video/vtg_youcook2_3k.json
+      data_folder: /lustre/fsw/portfolios/nvr/projects/nvr_taiwan_rvos/datasets/Grounded-VideoLLM/youcook2/videos
+    - json_path: /home/xiaoqians/personal/dataset/eagle-video/vtg_perceptiontest_4k.json
+      data_folder: /home/xiaoqians/personal/dataset/eagle-video/video-vtg-perceptiontest-train
+    - json_path: /home/xiaoqians/personal/dataset/eagle-video/vtg_charades_6k.json
+      data_folder: /home/xiaoqians/personal/dataset/eagle-video/video-vtg-charades-train

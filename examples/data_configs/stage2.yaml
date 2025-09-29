@@ -1,0 +1,7 @@
+datasets:
+    - json_path: /home/xiaoqians/personal/QwenVL_CoT/annotations/plm_clean_5k.json
+      data_folder: /lustre/fsw/portfolios/nvr/projects/nvr_taiwan_rvos/datasets/PLM-Video-Auto/videos
+    - json_path: /home/xiaoqians/personal/QwenVL_CoT/annotations/GVideoQA-anet-long-time.json
+      data_folder: /lustre/fsw/portfolios/nvr/projects/nvr_taiwan_rvos/datasets/Grounded-VideoLLM/activitynet/videos
+    - json_path: /home/xiaoqians/personal/Video-CoT/examples/data_configs/nextgqa-clean-2k.json
+      data_folder: /home/xiaoqians/personal/dataset/NExT-GQA/NExTVideo
