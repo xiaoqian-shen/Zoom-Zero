@@ -1,7 +1,7 @@
 datasets:
-    - json_path: /home/xiaoqians/personal/QwenVL_CoT/annotations/GVideoQA-anet.json
-      data_folder: /lustre/fsw/portfolios/nvr/projects/nvr_taiwan_rvos/datasets/Grounded-VideoLLM/activitynet/videos
-    - json_path: /home/xiaoqians/personal/QwenVL_CoT/annotations/GVideoQA-qvhighlights.json
-      data_folder: /lustre/fsw/portfolios/nvr/projects/nvr_taiwan_rvos/datasets/Grounded-VideoLLM/qvhighlights/videos
-    - json_path: /home/xiaoqians/personal/QwenVL_CoT/annotations/NextGQA/nextgqa_val.json
-      data_folder: /home/xiaoqians/personal/dataset/NExT-GQA/NExTVideo
+    - json_path: ./annotations/GVideoQA-anet.json
+      data_folder: ./datasets/Grounded-VideoLLM/activitynet/videos
+    - json_path: ./annotations/GVideoQA-qvhighlights.json
+      data_folder: ./Grounded-VideoLLM/qvhighlights/videos
+    - json_path: ./annotations/NextGQA/nextgqa_val.json
+      data_folder: ./dataset/NExT-GQA/NExTVideo
